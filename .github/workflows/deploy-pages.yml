@@ -30,7 +30,7 @@ jobs:
         run: npm install
 
       - name: Export Expo web bundle
-        run: npx expo export --platform web --clear --output-dir dist --base-url /UpperRoom/
+        run: npx expo export --platform web --output-dir dist
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
