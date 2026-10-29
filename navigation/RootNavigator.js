@@ -17,17 +17,18 @@ const Stack = createNativeStackNavigator();
 
 const getPrefixes = () => {
   const prefixes = [
+    'https://aj-brylle.github.io/UpperRoom/',
+    'https://aj-brylle.github.io/UpperRoom',
+    '/UpperRoom/',
+    '/UpperRoom',
     'upperroom://',
     'https://upperroomapparel.com',
   ];
 
   if (typeof window !== 'undefined' && window.location) {
     const origin = window.location.origin;
-    const pathname = window.location.pathname;
-    if (pathname.startsWith('/UpperRoom')) {
-      prefixes.unshift(`${origin}/UpperRoom`);
-      prefixes.unshift('/UpperRoom');
-    }
+    prefixes.unshift(`${origin}/UpperRoom/`);
+    prefixes.unshift(`${origin}/UpperRoom`);
     prefixes.push(origin);
   }
   prefixes.push('/');
@@ -45,7 +46,6 @@ export const linking = {
       About: 'about',
       Contact: 'contact',
       Admin: 'admin',
-      NotFound: '*',
     },
   },
 };
