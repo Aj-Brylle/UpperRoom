@@ -25,7 +25,8 @@
       "shortName": "UpperRoom",
       "description": "Wear the Word. Walk in the Spirit. Faith-inspired quiet luxury streetwear crafted in pure white and refined monochrome tones.",
       "themeColor": "#FFFFFF",
-      "backgroundColor": "#FFFFFF"
+      "backgroundColor": "#FFFFFF",
+      "publicPath": "/UpperRoom/"
     },
     "plugins": [
       "expo-font"
