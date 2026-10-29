@@ -15,12 +15,27 @@ import MobileTabBar from '../components/MobileTabBar';
 
 const Stack = createNativeStackNavigator();
 
-export const linking = {
-  prefixes: [
-    '/',
-    'https://upperroomapparel.com',
+const getPrefixes = () => {
+  const prefixes = [
     'upperroom://',
-  ],
+    'https://upperroomapparel.com',
+  ];
+
+  if (typeof window !== 'undefined' && window.location) {
+    const origin = window.location.origin;
+    const pathname = window.location.pathname;
+    if (pathname.startsWith('/UpperRoom')) {
+      prefixes.unshift(`${origin}/UpperRoom`);
+      prefixes.unshift('/UpperRoom');
+    }
+    prefixes.push(origin);
+  }
+  prefixes.push('/');
+  return prefixes;
+};
+
+export const linking = {
+  prefixes: getPrefixes(),
   config: {
     screens: {
       Home: '',

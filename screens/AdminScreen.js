@@ -199,7 +199,7 @@ export function AdminScreen({ navigation }) {
                             </View>
                           </View>
 
-                          <View style={styles.clientDetailsBox}>
+                          <View style={[styles.clientDetailsBox, isMobile && styles.clientDetailsBoxMobile]}>
                             <View style={styles.clientInfoCol}>
                               <Text style={styles.detailLabel}>CLIENT NAME</Text>
                               <Text style={styles.detailValue}>{order.customerName}</Text>
@@ -246,7 +246,7 @@ export function AdminScreen({ navigation }) {
                               <Text style={styles.totalNumber}>TOTAL: ${order.total.toFixed(2)}</Text>
                             </View>
 
-                            <View style={styles.orderActionsRow}>
+                            <View style={[styles.orderActionsRow, isMobile && styles.orderActionsRowMobile]}>
                               {isPending && (
                                 <>
                                   <Button
@@ -297,59 +297,78 @@ export function AdminScreen({ navigation }) {
               </View>
             ) : (
               <View style={styles.tabContent}>
-                <View style={styles.catalogTopBar}>
+                <View style={[styles.catalogTopBar, isMobile && styles.catalogTopBarMobile]}>
                   <Text style={styles.catalogMetrics}>
                     TOTAL ACTIVE PIECES: {products.length}
                   </Text>
 
-                  <View style={styles.catalogBtnGroup}>
+                  <View style={[styles.catalogBtnGroup, isMobile && styles.catalogBtnGroupMobile]}>
                     <Button
                       title={showAddForm ? 'HIDE FORM' : '+ ADD NEW PIECE'}
                       variant={showAddForm ? 'outline' : 'primary'}
                       size="sm"
                       onPress={() => setShowAddForm(!showAddForm)}
+                      style={isMobile && { flex: 1 }}
                     />
                     <Button
                       title="RESTORE DEFAULTS"
                       variant="outline"
                       size="sm"
                       onPress={resetProducts}
+                      style={isMobile && { flex: 1 }}
                     />
                   </View>
                 </View>
 
                 {showAddForm && (
                   <View style={styles.addFormContainer}>
-                    <Text style={styles.formTitle}>CREATION PROTOCOL: NEW PIECE</Text>
+                    <View style={styles.formHeaderRow}>
+                      <View>
+                        <Text style={styles.formTitle}>CREATION PROTOCOL: NEW PIECE</Text>
+                        <Text style={styles.formSubtitle}>
+                          Define garment tailoring specifications, archive pricing, and scripture references.
+                        </Text>
+                      </View>
+                      <Pressable
+                        onPress={() => setShowAddForm(false)}
+                        style={styles.closeFormBtn}
+                        accessibilityRole="button"
+                        accessibilityLabel="Close form"
+                      >
+                        <Text style={styles.closeFormText}>✕ CLOSE</Text>
+                      </Pressable>
+                    </View>
 
                     {formError ? <Text style={styles.formErrorText}>{formError}</Text> : null}
 
-                    <View style={styles.formGrid}>
-                      <View style={styles.inputField}>
-                        <Text style={styles.fieldLabel}>PIECE NAME *</Text>
-                        <TextInput
-                          value={name}
-                          onChangeText={setName}
-                          placeholder="e.g. Pentecost Ribbed Merino Sweater"
-                          placeholderTextColor={colors.textSecondary}
-                          style={styles.textInput}
-                        />
+                    <View style={styles.formRowsContainer}>
+                      <View style={styles.formRow}>
+                        <View style={[styles.inputField, { flex: 2, minWidth: isMobile ? '100%' : 260 }]}>
+                          <Text style={styles.fieldLabel}>PIECE NAME *</Text>
+                          <TextInput
+                            value={name}
+                            onChangeText={setName}
+                            placeholder="e.g. Pentecost Ribbed Merino Sweater"
+                            placeholderTextColor={colors.textSecondary}
+                            style={styles.textInput}
+                          />
+                        </View>
+
+                        <View style={[styles.inputField, { flex: 1, minWidth: isMobile ? '100%' : 160 }]}>
+                          <Text style={styles.fieldLabel}>PRICE (USD) *</Text>
+                          <TextInput
+                            value={price}
+                            onChangeText={setPrice}
+                            placeholder="e.g. 185"
+                            placeholderTextColor={colors.textSecondary}
+                            keyboardType="numeric"
+                            style={styles.textInput}
+                          />
+                        </View>
                       </View>
 
-                      <View style={styles.inputField}>
-                        <Text style={styles.fieldLabel}>PRICE (USD) *</Text>
-                        <TextInput
-                          value={price}
-                          onChangeText={setPrice}
-                          placeholder="e.g. 185"
-                          placeholderTextColor={colors.textSecondary}
-                          keyboardType="numeric"
-                          style={styles.textInput}
-                        />
-                      </View>
-
-                      <View style={styles.inputField}>
-                        <Text style={styles.fieldLabel}>CATEGORY</Text>
+                      <View style={styles.categorySection}>
+                        <Text style={styles.fieldLabel}>CATEGORY ARCHIVE</Text>
                         <View style={styles.categoryChips}>
                           {CATEGORIES.filter((c) => c !== 'ALL').map((cat) => (
                             <Pressable
@@ -373,121 +392,173 @@ export function AdminScreen({ navigation }) {
                         </View>
                       </View>
 
-                      <View style={styles.inputField}>
-                        <Text style={styles.fieldLabel}>FABRIC SPECIFICATION</Text>
-                        <TextInput
-                          value={fabric}
-                          onChangeText={setFabric}
-                          placeholder="e.g. 420 GSM Organic Cotton French Terry"
-                          placeholderTextColor={colors.textSecondary}
-                          style={styles.textInput}
-                        />
+                      <View style={styles.formRow}>
+                        <View style={[styles.inputField, { width: '100%' }]}>
+                          <Text style={styles.fieldLabel}>FABRIC SPECIFICATION</Text>
+                          <TextInput
+                            value={fabric}
+                            onChangeText={setFabric}
+                            placeholder="e.g. 420 GSM Organic Cotton French Terry"
+                            placeholderTextColor={colors.textSecondary}
+                            style={styles.textInput}
+                          />
+                        </View>
                       </View>
 
-                      <View style={[styles.inputField, { width: '100%' }]}>
-                        <Text style={styles.fieldLabel}>IMAGE URL</Text>
-                        <TextInput
-                          value={imageUrl}
-                          onChangeText={setImageUrl}
-                          placeholder="https://images.unsplash.com/..."
-                          placeholderTextColor={colors.textSecondary}
-                          style={styles.textInput}
-                        />
+                      <View style={styles.formRow}>
+                        <View style={[styles.inputField, { width: '100%' }]}>
+                          <Text style={styles.fieldLabel}>IMAGE URL</Text>
+                          <TextInput
+                            value={imageUrl}
+                            onChangeText={setImageUrl}
+                            placeholder="https://images.unsplash.com/..."
+                            placeholderTextColor={colors.textSecondary}
+                            style={styles.textInput}
+                          />
+                        </View>
                       </View>
 
-                      <View style={[styles.inputField, { width: '100%' }]}>
-                        <Text style={styles.fieldLabel}>EDITORIAL DESCRIPTION</Text>
-                        <TextInput
-                          value={description}
-                          onChangeText={setDescription}
-                          placeholder="Architectural drape cut from pure organic cotton..."
-                          placeholderTextColor={colors.textSecondary}
-                          multiline
-                          numberOfLines={3}
-                          style={[styles.textInput, styles.textArea]}
-                        />
+                      <View style={styles.formRow}>
+                        <View style={[styles.inputField, { width: '100%' }]}>
+                          <Text style={styles.fieldLabel}>EDITORIAL DESCRIPTION</Text>
+                          <TextInput
+                            value={description}
+                            onChangeText={setDescription}
+                            placeholder="Architectural drape cut from pure organic cotton..."
+                            placeholderTextColor={colors.textSecondary}
+                            multiline
+                            numberOfLines={3}
+                            style={[styles.textInput, styles.textArea]}
+                          />
+                        </View>
                       </View>
 
-                      <View style={styles.inputField}>
-                        <Text style={styles.fieldLabel}>SCRIPTURE VERSE</Text>
-                        <TextInput
-                          value={scriptureVerse}
-                          onChangeText={setScriptureVerse}
-                          placeholder="e.g. Isaiah 40:31"
-                          placeholderTextColor={colors.textSecondary}
-                          style={styles.textInput}
-                        />
-                      </View>
+                      <View style={styles.formRow}>
+                        <View style={[styles.inputField, { flex: 1, minWidth: isMobile ? '100%' : 220 }]}>
+                          <Text style={styles.fieldLabel}>SCRIPTURE VERSE</Text>
+                          <TextInput
+                            value={scriptureVerse}
+                            onChangeText={setScriptureVerse}
+                            placeholder="e.g. Isaiah 40:31"
+                            placeholderTextColor={colors.textSecondary}
+                            style={styles.textInput}
+                          />
+                        </View>
 
-                      <View style={styles.inputField}>
-                        <Text style={styles.fieldLabel}>SCRIPTURE PASSAGE</Text>
-                        <TextInput
-                          value={scripturePassage}
-                          onChangeText={setScripturePassage}
-                          placeholder="They who wait for the Lord shall renew their strength..."
-                          placeholderTextColor={colors.textSecondary}
-                          style={styles.textInput}
-                        />
+                        <View style={[styles.inputField, { flex: 2, minWidth: isMobile ? '100%' : 280 }]}>
+                          <Text style={styles.fieldLabel}>SCRIPTURE PASSAGE</Text>
+                          <TextInput
+                            value={scripturePassage}
+                            onChangeText={setScripturePassage}
+                            placeholder="They who wait for the Lord shall renew their strength..."
+                            placeholderTextColor={colors.textSecondary}
+                            style={styles.textInput}
+                          />
+                        </View>
                       </View>
                     </View>
 
                     <Button
                       title="PUBLISH PIECE TO ATELIER"
-                      variant="primary"
+                      variant="secondary"
                       size="md"
                       onPress={handleCreateProduct}
-                      style={{ marginTop: spacing.lg }}
+                      style={{ marginTop: spacing.xl, alignSelf: isMobile ? 'stretch' : 'flex-start' }}
                     />
                   </View>
                 )}
 
-                <View style={styles.productsTable}>
-                  <View style={styles.tableHead}>
-                    <Text style={[styles.thText, { flex: 0.6 }]}>IMAGE</Text>
-                    <Text style={[styles.thText, { flex: 2 }]}>NAME & CATEGORY</Text>
-                    <Text style={[styles.thText, { flex: 1 }]}>PRICE</Text>
-                    <Text style={[styles.thText, { flex: 1.5 }]}>SCRIPTURE</Text>
-                    <Text style={[styles.thText, { flex: 1, textAlign: 'right' }]}>ACTION</Text>
+                {isMobile ? (
+                  <View style={styles.mobileProductsList}>
+                    {products.map((product) => (
+                      <View key={product.id} style={styles.mobileProductCard}>
+                        <View style={styles.mobileCardTopRow}>
+                          {product.images && product.images[0] ? (
+                            <Image
+                              source={{ uri: product.images[0] }}
+                              style={styles.mobileProdThumb}
+                              resizeMode="cover"
+                            />
+                          ) : (
+                            <View style={styles.mobileProdThumb} />
+                          )}
+                          <View style={styles.mobileProdDetails}>
+                            <Text style={styles.prodRowName}>{product.name}</Text>
+                            <View style={styles.mobileBadgeRow}>
+                              <View style={styles.prodRowBadge}>
+                                <Text style={styles.prodRowCategory}>{product.category}</Text>
+                              </View>
+                              <Text style={styles.mobileProdPrice}>${product.price}.00</Text>
+                            </View>
+                            {product.scripture?.verse ? (
+                              <Text style={styles.mobileProdVerse}>{product.scripture.verse}</Text>
+                            ) : null}
+                          </View>
+                        </View>
+                        <View style={styles.mobileCardActionRow}>
+                          <Pressable
+                            onPress={() => deleteProduct(product.id)}
+                            style={styles.mobileDeleteBtn}
+                            accessibilityRole="button"
+                            accessibilityLabel={`Delete ${product.name}`}
+                          >
+                            <Text style={styles.deleteProdBtnText}>REMOVE PIECE</Text>
+                          </Pressable>
+                        </View>
+                      </View>
+                    ))}
                   </View>
-
-                  {products.map((product) => (
-                    <View key={product.id} style={styles.tableRow}>
-                      <View style={[styles.tdCol, { flex: 0.6 }]}>
-                        {product.images && product.images[0] ? (
-                          <Image
-                            source={{ uri: product.images[0] }}
-                            style={styles.prodThumb}
-                            resizeMode="cover"
-                          />
-                        ) : (
-                          <View style={styles.prodThumb} />
-                        )}
-                      </View>
-
-                      <View style={[styles.tdCol, { flex: 2 }]}>
-                        <Text style={styles.prodRowName}>{product.name}</Text>
-                        <Text style={styles.prodRowCategory}>{product.category}</Text>
-                      </View>
-
-                      <View style={[styles.tdCol, { flex: 1 }]}>
-                        <Text style={styles.prodRowPrice}>${product.price}.00</Text>
-                      </View>
-
-                      <View style={[styles.tdCol, { flex: 1.5 }]}>
-                        <Text style={styles.prodRowScripture}>{product.scripture?.verse || '—'}</Text>
-                      </View>
-
-                      <View style={[styles.tdCol, { flex: 1, alignItems: 'flex-end' }]}>
-                        <Pressable
-                          onPress={() => deleteProduct(product.id)}
-                          style={styles.deleteProdBtn}
-                        >
-                          <Text style={styles.deleteProdBtnText}>DELETE</Text>
-                        </Pressable>
-                      </View>
+                ) : (
+                  <View style={styles.productsTable}>
+                    <View style={styles.tableHead}>
+                      <Text style={[styles.thText, { flex: 0.6 }]}>IMAGE</Text>
+                      <Text style={[styles.thText, { flex: 2 }]}>NAME & CATEGORY</Text>
+                      <Text style={[styles.thText, { flex: 1 }]}>PRICE</Text>
+                      <Text style={[styles.thText, { flex: 1.5 }]}>SCRIPTURE</Text>
+                      <Text style={[styles.thText, { flex: 1, textAlign: 'right' }]}>ACTION</Text>
                     </View>
-                  ))}
-                </View>
+
+                    {products.map((product) => (
+                      <View key={product.id} style={styles.tableRow}>
+                        <View style={[styles.tdCol, { flex: 0.6 }]}>
+                          {product.images && product.images[0] ? (
+                            <Image
+                              source={{ uri: product.images[0] }}
+                              style={styles.prodThumb}
+                              resizeMode="cover"
+                            />
+                          ) : (
+                            <View style={styles.prodThumb} />
+                          )}
+                        </View>
+
+                        <View style={[styles.tdCol, { flex: 2 }]}>
+                          <Text style={styles.prodRowName}>{product.name}</Text>
+                          <View style={styles.prodRowBadge}>
+                            <Text style={styles.prodRowCategory}>{product.category}</Text>
+                          </View>
+                        </View>
+
+                        <View style={[styles.tdCol, { flex: 1 }]}>
+                          <Text style={styles.prodRowPrice}>${product.price}.00</Text>
+                        </View>
+
+                        <View style={[styles.tdCol, { flex: 1.5 }]}>
+                          <Text style={styles.prodRowScripture}>{product.scripture?.verse || '—'}</Text>
+                        </View>
+
+                        <View style={[styles.tdCol, { flex: 1, alignItems: 'flex-end' }]}>
+                          <Pressable
+                            onPress={() => deleteProduct(product.id)}
+                            style={styles.deleteProdBtn}
+                          >
+                            <Text style={styles.deleteProdBtnText}>DELETE</Text>
+                          </Pressable>
+                        </View>
+                      </View>
+                    ))}
+                  </View>
+                )}
               </View>
             )}
           </View>
@@ -900,6 +971,22 @@ const styles = StyleSheet.create({
     padding: spacing.xl,
     marginBottom: spacing['3xl'],
     backgroundColor: colors.brandWhite,
+    shadowColor: colors.black,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 12,
+    elevation: 2,
+  },
+  formHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    flexWrap: 'wrap',
+    gap: 12,
+    marginBottom: spacing.lg,
+    paddingBottom: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.borderHairline,
   },
   formTitle: {
     fontFamily: Platform.select({
@@ -909,7 +996,32 @@ const styles = StyleSheet.create({
     fontSize: typography.sizes.md,
     letterSpacing: typography.letterSpacing.wider,
     color: colors.black,
-    marginBottom: spacing.lg,
+    marginBottom: 4,
+  },
+  formSubtitle: {
+    fontFamily: Platform.select({
+      web: typography.webSansFallback,
+      default: typography.sans,
+    }),
+    fontSize: typography.sizes.xs,
+    color: colors.textSecondary,
+    letterSpacing: typography.letterSpacing.normal,
+  },
+  closeFormBtn: {
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderWidth: 1,
+    borderColor: colors.borderHairline,
+    backgroundColor: colors.surfaceSubtle,
+  },
+  closeFormText: {
+    fontFamily: Platform.select({
+      web: typography.webSansFallback,
+      default: typography.sansBold,
+    }),
+    fontSize: 10,
+    letterSpacing: typography.letterSpacing.wider,
+    color: colors.black,
   },
   formErrorText: {
     fontFamily: Platform.select({
@@ -921,14 +1033,19 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
     textDecorationLine: 'underline',
   },
-  formGrid: {
+  formRowsContainer: {
+    gap: 16,
+  },
+  formRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 16,
   },
   inputField: {
-    flex: 1,
-    minWidth: 260,
+    minWidth: 200,
+  },
+  categorySection: {
+    marginTop: 2,
   },
   fieldLabel: {
     fontFamily: Platform.select({
@@ -938,12 +1055,15 @@ const styles = StyleSheet.create({
     fontSize: 10,
     letterSpacing: typography.letterSpacing.widest,
     color: colors.black,
-    marginBottom: 6,
+    marginBottom: 8,
   },
   textInput: {
-    borderBottomWidth: 1,
-    borderBottomColor: colors.black,
-    paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: colors.borderHairline,
+    backgroundColor: '#FAFAFA',
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderRadius: 2,
     fontFamily: Platform.select({
       web: typography.webSansFallback,
       default: typography.sans,
@@ -953,18 +1073,22 @@ const styles = StyleSheet.create({
     outlineStyle: 'none',
   },
   textArea: {
-    minHeight: 70,
+    minHeight: 80,
+    textAlignVertical: 'top',
   },
   categoryChips: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 8,
     marginTop: 4,
   },
   catChip: {
-    paddingVertical: 6,
-    paddingHorizontal: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
     borderWidth: 1,
     borderColor: colors.borderHairline,
+    backgroundColor: colors.surfaceSubtle,
+    borderRadius: 2,
   },
   catChipActive: {
     borderColor: colors.black,
@@ -973,7 +1097,7 @@ const styles = StyleSheet.create({
   catChipText: {
     fontFamily: Platform.select({
       web: typography.webSansFallback,
-      default: typography.sans,
+      default: typography.sansMedium,
     }),
     fontSize: 10,
     letterSpacing: typography.letterSpacing.wider,
@@ -981,18 +1105,20 @@ const styles = StyleSheet.create({
   },
   catChipTextActive: {
     color: colors.brandWhite,
+    fontWeight: '600',
   },
   productsTable: {
     borderWidth: 1,
     borderColor: colors.borderHairline,
+    backgroundColor: colors.brandWhite,
   },
   tableHead: {
     flexDirection: 'row',
     backgroundColor: colors.surfaceSubtle,
     borderBottomWidth: 1,
     borderBottomColor: colors.borderHairline,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
   },
   thText: {
     fontFamily: Platform.select({
@@ -1006,20 +1132,21 @@ const styles = StyleSheet.create({
   tableRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 12,
+    paddingVertical: 14,
+    paddingHorizontal: 14,
     borderBottomWidth: 1,
     borderBottomColor: colors.surfaceSubtle,
   },
   tdCol: {
-    paddingHorizontal: 4,
+    paddingHorizontal: 6,
   },
   prodThumb: {
-    width: 44,
-    height: 52,
+    width: 48,
+    height: 60,
     backgroundColor: colors.surfaceSubtle,
     borderWidth: 1,
     borderColor: colors.borderHairline,
+    borderRadius: 2,
   },
   prodRowName: {
     fontFamily: Platform.select({
@@ -1028,15 +1155,27 @@ const styles = StyleSheet.create({
     }),
     fontSize: typography.sizes.xs,
     color: colors.black,
+    fontWeight: '600',
+  },
+  prodRowBadge: {
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    backgroundColor: colors.surfaceSubtle,
+    borderWidth: 1,
+    borderColor: colors.borderHairline,
+    alignSelf: 'flex-start',
+    marginTop: 4,
+    borderRadius: 2,
   },
   prodRowCategory: {
     fontFamily: Platform.select({
       web: typography.webSansFallback,
-      default: typography.sans,
+      default: typography.sansMedium,
     }),
-    fontSize: 10,
+    fontSize: 9,
+    letterSpacing: typography.letterSpacing.wider,
     color: colors.textSecondary,
-    marginTop: 2,
+    textTransform: 'uppercase',
   },
   prodRowPrice: {
     fontFamily: Platform.select({
@@ -1045,20 +1184,24 @@ const styles = StyleSheet.create({
     }),
     fontSize: typography.sizes.xs,
     color: colors.black,
+    fontWeight: '600',
   },
   prodRowScripture: {
     fontFamily: Platform.select({
       web: typography.webSansFallback,
       default: typography.sans,
     }),
-    fontSize: 10,
+    fontSize: 11,
     color: colors.textSecondary,
+    fontStyle: 'italic',
   },
   deleteProdBtn: {
     paddingVertical: 6,
-    paddingHorizontal: 10,
+    paddingHorizontal: 12,
     borderWidth: 1,
-    borderColor: colors.black,
+    borderColor: colors.borderHairline,
+    backgroundColor: colors.brandWhite,
+    borderRadius: 2,
   },
   deleteProdBtnText: {
     fontFamily: Platform.select({
@@ -1068,6 +1211,91 @@ const styles = StyleSheet.create({
     fontSize: 9,
     letterSpacing: typography.letterSpacing.wider,
     color: colors.black,
+  },
+  clientDetailsBoxMobile: {
+    flexDirection: 'column',
+    gap: 12,
+  },
+  orderActionsRowMobile: {
+    width: '100%',
+    flexDirection: 'column',
+    gap: 8,
+  },
+  catalogTopBarMobile: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    gap: 12,
+  },
+  catalogBtnGroupMobile: {
+    width: '100%',
+    flexDirection: 'row',
+    gap: 8,
+  },
+  mobileProductsList: {
+    gap: 12,
+  },
+  mobileProductCard: {
+    borderWidth: 1,
+    borderColor: colors.borderHairline,
+    backgroundColor: colors.brandWhite,
+    padding: spacing.md,
+    borderRadius: 2,
+  },
+  mobileCardTopRow: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  mobileProdThumb: {
+    width: 60,
+    height: 76,
+    backgroundColor: colors.surfaceSubtle,
+    borderWidth: 1,
+    borderColor: colors.borderHairline,
+    borderRadius: 2,
+  },
+  mobileProdDetails: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  mobileBadgeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 4,
+    marginBottom: 4,
+  },
+  mobileProdPrice: {
+    fontFamily: Platform.select({
+      web: typography.webSansFallback,
+      default: typography.sansBold,
+    }),
+    fontSize: typography.sizes.xs,
+    color: colors.black,
+    fontWeight: '700',
+  },
+  mobileProdVerse: {
+    fontFamily: Platform.select({
+      web: typography.webSansFallback,
+      default: typography.sans,
+    }),
+    fontSize: 10,
+    color: colors.textSecondary,
+    fontStyle: 'italic',
+  },
+  mobileCardActionRow: {
+    marginTop: spacing.sm,
+    paddingTop: spacing.xs,
+    borderTopWidth: 1,
+    borderTopColor: colors.surfaceSubtle,
+    alignItems: 'flex-end',
+  },
+  mobileDeleteBtn: {
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderWidth: 1,
+    borderColor: colors.borderHairline,
+    backgroundColor: colors.surfaceSubtle,
+    borderRadius: 2,
   },
 });
 

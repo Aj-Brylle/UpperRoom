@@ -58,27 +58,27 @@ export function HomeScreen({ navigation }) {
             <View style={styles.heroOverlay}>
               <View style={styles.heroContent}>
                 <Text style={styles.heroEyebrow}>AUTUMN / WINTER // THE SANCTUARY LINE</Text>
-                <Text style={styles.heroTitle}>
+                <Text style={[styles.heroTitle, isMobile && styles.heroTitleMobile]}>
                   WEAR THE WORD.{'\n'}WALK IN THE SPIRIT.
                 </Text>
-                <Text style={styles.heroSubtitle}>
+                <Text style={[styles.heroSubtitle, isMobile && styles.heroSubtitleMobile]}>
                   Faith-inspired quiet luxury streetwear. Monolithic silhouettes crafted in pure white organic textiles for the consecrated walk.
                 </Text>
 
-                <View style={styles.heroActions}>
+                <View style={[styles.heroActions, isMobile && styles.heroActionsMobile]}>
                   <Button
                     title="SHOP THE COLLECTION"
                     variant="primary"
                     size="lg"
                     onPress={() => navigation.navigate('Shop')}
-                    style={styles.heroButton}
+                    style={[styles.heroButton, isMobile && styles.heroButtonMobile]}
                   />
                   <Button
                     title="READ OUR STORY"
                     variant="outline"
                     size="lg"
                     onPress={() => navigation.navigate('About')}
-                    style={[styles.heroButton, styles.heroSecondaryButton]}
+                    style={[styles.heroButton, styles.heroSecondaryButton, isMobile && styles.heroButtonMobile]}
                     textStyle={{ color: colors.brandWhite }}
                   />
                 </View>
@@ -191,7 +191,7 @@ export function HomeScreen({ navigation }) {
                 </Text>
               </View>
             ) : (
-              <View style={styles.newsletterForm}>
+              <View style={[styles.newsletterForm, isMobile && styles.newsletterFormMobile]}>
                 <TextInput
                   value={newsletterEmail}
                   onChangeText={setNewsletterEmail}
@@ -206,7 +206,7 @@ export function HomeScreen({ navigation }) {
                   variant="primary"
                   size="md"
                   onPress={handleSubscribe}
-                  style={styles.subscribeBtn}
+                  style={[styles.subscribeBtn, isMobile && { width: '100%' }]}
                 />
               </View>
             )}
@@ -529,6 +529,31 @@ const styles = StyleSheet.create({
     letterSpacing: typography.letterSpacing.wider,
     color: colors.black,
     textAlign: 'center',
+  },
+  heroTitleMobile: {
+    fontSize: 32,
+    lineHeight: 40,
+    letterSpacing: 0.5,
+  },
+  heroSubtitleMobile: {
+    fontSize: 14,
+    lineHeight: 22,
+    marginBottom: spacing.xl,
+  },
+  heroActionsMobile: {
+    flexDirection: 'column',
+    width: '100%',
+    alignItems: 'stretch',
+    gap: 12,
+  },
+  heroButtonMobile: {
+    width: '100%',
+    minWidth: '100%',
+  },
+  newsletterFormMobile: {
+    flexDirection: 'column',
+    width: '100%',
+    gap: 12,
   },
 });
 

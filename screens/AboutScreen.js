@@ -44,7 +44,7 @@ export function AboutScreen({ navigation }) {
         <View style={styles.bannerImageWrapper}>
           <Image
             source={{
-              uri: 'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=1600&q=85',
+              uri: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1600&q=85',
             }}
             style={styles.bannerImage}
             resizeMode="cover"

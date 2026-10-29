@@ -48,7 +48,7 @@ export function MobileTabBar({ activeRoute, navigation }) {
 const styles = StyleSheet.create({
   tabBar: {
     flexDirection: 'row',
-    height: 56,
+    height: 60,
     backgroundColor: colors.brandWhite,
     borderTopWidth: 1,
     borderTopColor: colors.borderHairline,
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     zIndex: 99,
     alignItems: 'center',
     justifyContent: 'space-around',
-    paddingBottom: Platform.OS === 'ios' ? 4 : 0,
+    paddingBottom: Platform.OS === 'ios' ? 10 : 4,
   },
   tabItem: {
     flex: 1,
