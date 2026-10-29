@@ -1,0 +1,34 @@
+{
+  "expo": {
+    "name": "UpperRoom Apparel",
+    "slug": "UpperRoom",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#FFFFFF",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#FFFFFF",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro",
+      "name": "UpperRoom Apparel | Quiet Luxury Streetwear",
+      "shortName": "UpperRoom",
+      "description": "Wear the Word. Walk in the Spirit. Faith-inspired quiet luxury streetwear crafted in pure white and refined monochrome tones.",
+      "themeColor": "#FFFFFF",
+      "backgroundColor": "#FFFFFF"
+    },
+    "plugins": [
+      "expo-font"
+    ]
+  }
+}
