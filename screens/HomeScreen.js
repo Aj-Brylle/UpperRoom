@@ -50,7 +50,7 @@ export function HomeScreen({ navigation }) {
         <View style={styles.heroWrapper}>
           <ImageBackground
             source={{
-              uri: 'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=2000&q=85',
+              uri: 'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=1200&q=75',
             }}
             style={styles.heroImage}
             resizeMode="cover"
