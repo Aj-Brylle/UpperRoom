@@ -1,4 +1,4 @@
-﻿name: Deploy Expo Web to GitHub Pages
+name: Deploy Expo Web to GitHub Pages
 
 on:
   push:
@@ -25,10 +25,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Export Expo web bundle
         run: npx expo export --platform web --clear --output-dir dist --base-url /UpperRoom/
